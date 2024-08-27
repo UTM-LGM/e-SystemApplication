@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "R/0hqw9KI9usGJfleRyPI02iiPIDsb8pNRCdLBOwWfU=",
+  "Source": "e-systemApplicationAPI",
+  "BasePath": "_content/e-systemApplicationAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
