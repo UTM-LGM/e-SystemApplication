@@ -1,0 +1,118 @@
+<div class="box-container">
+    <h1>System Owner Information</h1>
+    <hr />
+
+    <form>
+        <div class="column">
+            <label>System Name : </label>
+            <mat-select name="systemName" placeholder="Please Choose" [(ngModel)]="systemOwner.systemId">
+                <mat-option *ngFor="let system of systems" [value]="system.id">
+                    {{ system.systemName }}
+                </mat-option>
+            </mat-select>
+
+            <label>Department : </label>
+            <mat-select name="divName" placeholder="Please Choose" (selectionChange)="getUnitByDivision()"
+                [(ngModel)]="systemOwner.divId">
+                <mat-option *ngFor="let div of divisions" [value]="div.div_id">
+                    {{ div.div_name }}
+                </mat-option>
+            </mat-select>
+        </div>
+
+        <div class="column">
+            <label>Unit : </label>
+            <div *ngIf="systemOwner.divId == null">
+                <input type="text" name="unitName" disabled value="Please Choose Department" />
+            </div>
+            <div *ngIf="systemOwner.divId != null">
+                <mat-select name="unitName" placeholder="Please Choose" [(ngModel)]="systemOwner.unitId"
+                    (selectionChange)="getEmployeesByUnit()">
+                    <mat-option *ngFor="let unit of unitByDivision" [value]="unit.unit_id">
+                        {{ unit.unit_name }}
+                    </mat-option>
+                </mat-select>
+            </div>
+
+
+            <label>System Owner Name : </label>
+
+            <div *ngIf="systemOwner.unitId == null || systemOwner.divId == null ">
+                <input type="text" name="employeeName" disabled value="Please Choose Department and Unit" />
+            </div>
+
+            <div *ngIf="systemOwner.unitId != null && systemOwner.divId != null">
+                <mat-select name="employeeName" placeholder="Please Choose" [(ngModel)]="systemOwner.userId"
+                    (selectionChange)="setEmail($event.value)">
+                    <mat-option *ngFor="let employee of employeeByUnit" [value]="employee.emp_id">
+                        {{ employee.emp_name }}
+                    </mat-option>
+                </mat-select>
+            </div>
+        </div>
+
+    </form>
+    <div style="float: right;">
+        <button class="btn-add" (click)="submit()" [disabled]="isSubmit">Add <i class="fa-solid fa-plus"></i></button>
+    </div><br />
+
+    <br />
+
+    <div class="box-table">
+        <h1>List of system owners</h1>
+        <!-- <input style="width: 40%;" type="text" [(ngModel)]="term" placeholder="Filter System" /> -->
+
+        <div style="overflow-x: auto;">
+            <table style="width: 100%">
+                <tr>
+                    <th width="30px">No</th>
+                    <th style="cursor: pointer;" *ngFor="let column of sortableColumns" scope="col"
+                        [attr.data-order]="order" [attr.data-name]="column.columnName"
+                        (click)="toggleSort(column.columnName)">
+                        {{ column.displayText }}
+                    </th>
+                    <th width="90px">Action</th>
+                </tr>
+
+                <tr *ngIf="isLoading">
+                    <td colspan="6">
+                        <ngx-skeleton-loader appearance="line" animation="progress-dark" [theme]="{height:'50px'}">
+                        </ngx-skeleton-loader>
+                    </td>
+                </tr>
+
+                <tr *ngIf="systemOwners.length == 0 && !isLoading">
+                    <td colspan="6" style="color: red; text-align: center;">No System Owner</td>
+                </tr>
+
+                <ng-container *ngIf="!isLoading">
+                    <tr
+                        *ngFor="let owner of systemOwners | paginate: { itemsPerPage: itemPerPage, currentPage: pageNumber }; let i = index">
+                        <td style="text-align: center;">{{ (pageNumber - 1) * itemPerPage + i + 1 }}</td>
+                        <td style="padding-left:20px;">{{ owner.systemName }}</td>
+                        <td style="padding-left:20px;">{{ owner.divisionName }}</td>
+                        <td style="padding-left:20px;">{{ owner.unitName }}</td>
+                        <td style="padding-left:20px;">{{ owner.employeeName }}</td>
+                        <td style="text-align: center;">
+                            <button (click)="status(owner)" [ngClass]="{
+                    'active-btn': owner.isActive == true,
+                    'inactive-btn': owner.isActive == false
+                  }">
+                                {{ owner.isActive == true ? "Active" : "Inactive" }}
+                            </button>
+                        </td>
+                    </tr>
+                </ng-container>
+            </table>
+        </div>
+
+        <pagination-controls style="text-align: center;" (pageChange)="pageNumber = $event"></pagination-controls>
+
+    </div>
+
+
+
+
+
+
+</div>

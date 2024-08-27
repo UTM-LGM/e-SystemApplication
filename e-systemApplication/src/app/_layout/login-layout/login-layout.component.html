@@ -1,0 +1,21 @@
+<mat-toolbar>
+    <mat-toolbar-row class="toolbar-row">
+      <span class="toolbar-logo">
+        <img width="40px" src="assets/Images/LGM-logo.png" />
+      </span>
+      <span class="toolbar-title">e - System Application</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+  
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" class="sidenav">
+      <app-sidenav></app-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content >
+      <div class="content mat-elevation-z8"><router-outlet></router-outlet></div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  
+  

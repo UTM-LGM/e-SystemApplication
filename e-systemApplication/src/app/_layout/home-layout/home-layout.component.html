@@ -1,0 +1,33 @@
+<mat-toolbar>
+    <mat-toolbar-row>
+      <div>
+        <button mat-button class="menu-button" (click)="sidenav.toggle()">
+          <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
+          <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+        </button>
+      </div>
+      <span class="span">
+        <img width="40px" style="padding: 5px;" src="assets/Images/LGM-logo.png" />
+      </span>
+      &nbsp;
+      <span class="homelink" style="cursor: pointer;" routerLink="/home">e - System Application</span>
+      <span class="flexExpand"></span>
+  
+      <span style="cursor: pointer;" (click)="logOut()">
+        <i class="fa-solid fa-power-off"></i>
+      </span>
+      &nbsp;&nbsp;
+    </mat-toolbar-row>
+  </mat-toolbar>
+  
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" class="sidenav">
+      <app-sidenav></app-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content >
+      <div class="content mat-elevation-z8"><router-outlet></router-outlet></div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  
+  
