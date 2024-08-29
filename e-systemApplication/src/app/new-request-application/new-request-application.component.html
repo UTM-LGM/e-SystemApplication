@@ -1,0 +1,132 @@
+<div class="box-container">
+    <h1>Application Request Information</h1>
+    <hr />
+
+    <form>
+        <div class="column">
+            <label>Date Applied : </label>
+            <input type="date" #date name="date" value="{{currentDate}}" (change)="selectedDate(date.value)" />
+            <label>Department : </label>
+            <mat-select name="divName" placeholder="Please Choose" (selectionChange)="getUnitByDivision()"
+                [(ngModel)]="application.divId">
+                <mat-option *ngFor="let div of divisions" [value]="div.div_id">
+                    {{ div.div_name }}
+                </mat-option>
+            </mat-select>
+        </div>
+
+        <div class="column">
+            <label>Unit : </label>
+            <div *ngIf="application.divId == null">
+                <input type="text" name="unitName" disabled value="Please Choose Department" />
+            </div>
+            <div *ngIf="application.divId != null">
+                <mat-select name="unitName" placeholder="Please Choose" [(ngModel)]="application.unitId"
+                    (selectionChange)="getEmployeesByUnit()">
+                    <mat-option *ngFor="let unit of unitByDivision" [value]="unit.unit_id">
+                        {{ unit.unit_name }}
+                    </mat-option>
+                </mat-select>
+            </div>
+
+            <label>User Full Name : </label>
+            <div *ngIf="application.unitId == null || application.divId == null ">
+                <input type="text" name="employeeName" disabled value="Please Choose Department and Unit" />
+            </div>
+
+            <div *ngIf="application.unitId != null && application.divId != null" >
+                <mat-select name="employeeName" placeholder="Please Choose" [(ngModel)]="application.userId" (selectionChange)="setEmail($event.value)">
+                    <mat-option *ngFor="let employee of employeeByUnit" [value]="employee.emp_id">
+                        {{ employee.emp_name }}
+                    </mat-option>
+                </mat-select>
+            </div>
+        </div>
+
+        <div class="column">
+            <label>System Name : </label>
+            <mat-select name="systemName" placeholder="Please Choose" [(ngModel)]="application.systemId"
+                (selectionChange)="getSystemRole()">
+              <mat-option *ngFor="let system of systems" [value]="system.id">
+                {{ system.systemName }}
+              </mat-option>
+            </mat-select>
+          
+            <label>Role Name : </label>
+            <div *ngIf="!application.systemId"> <!-- Checking for falsy value -->
+              <input type="text" name="roleName" disabled placeholder="Please choose System Name" />
+            </div>
+            <div *ngIf="application.systemId"> <!-- Showing the mat-select only when systemId is selected -->
+              <mat-select name="systemRoleId" placeholder="Please Choose" [(ngModel)]="application.systemRoleId">
+                <mat-option *ngFor="let role of systemRoles" [value]="role.id">
+                  {{ role.roleName }}
+                </mat-option>
+              </mat-select>
+            </div>
+          </div>
+          
+
+    </form>
+    <div style="float: right;">
+        <button class="btn-add" (click)="submit()">Submit <i class="fa-solid fa-plus"></i></button>
+    </div><br />
+
+    <br />
+
+    <div class="box-table">
+        <h1>List of Application Request</h1>
+        <div style="overflow-x: auto;">
+        <table style="width: 100%;">
+            <tr>
+                <th width="30px">No</th>
+                <th style="cursor: pointer;" *ngFor="let column of sortableColumns" scope="col"
+                    [attr.data-order]="order" [attr.data-name]="column.columnName"
+                    (click)="toggleSort(column.columnName)">
+                    {{ column.displayText }}
+                </th>
+                <th width="90px">Status</th>
+                <th width="90px">Action</th>
+
+            </tr>
+
+            <tr *ngIf="isLoading">
+                <td colspan="6">
+                    <ngx-skeleton-loader appearance="line" animation="progress-dark" [theme]="{height:'50px'}">
+                    </ngx-skeleton-loader>
+                </td>
+            </tr>
+
+            <tr *ngIf="applications.length == 0 && !isLoading">
+                <td colspan="6" style="color: red; text-align: center;">No New Application Request</td>
+            </tr>
+
+            <ng-container *ngIf="!isLoading">
+                <tr
+                  *ngFor="let application of applications | paginate: { itemsPerPage: itemPerPage, currentPage: pageNumber }; let i = index">
+                  <td style="text-align: center;">{{ (pageNumber - 1) * itemPerPage + i + 1 }}</td>
+                  <td style="padding-left:20px;">{{ application.employeeName }}</td>
+                  <td style="padding-left:20px;">{{ application.systemName }}</td>
+                  <td style="padding-left:20px;">{{ application.roleName }}</td>
+                  <td style="text-align: center;">
+                    <span [ngClass]="{
+                        'text-green': application.status === 'Assigned'|| application.status === 'Complete',
+                        'text-red': application.status === 'New' || application.status === 'Approved' || application.status === 'Cancel'  || application.status === 'Rejected'
+                      }">
+                        {{ application.status === "New" ? "Waiting for approval" :
+                        application.status === "Approved" ? "Waiting for assign" :
+                        application.status === "Rejected" ? "Rejected by System Owner":
+                        application.status === "Assigned" ? "Complete" : "Cancel" }}
+                    </span>
+                  </td>
+                  <td><button *ngIf="application.status === 'New'" class="btn-del" (click)="cancel(application.id)" >Cancel <i class="fa fa-xmark"></i> </button></td>
+                </tr>
+            </ng-container>
+
+        </table>
+    </div>
+
+        <pagination-controls style="text-align: center;" (pageChange)="pageNumber = $event"></pagination-controls>
+
+    </div>
+
+</div>

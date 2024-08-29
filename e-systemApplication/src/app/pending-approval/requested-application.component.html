@@ -1,0 +1,52 @@
+<div class="box-container">
+    <h1>List of Pending Approval</h1>
+    <hr>
+
+    <div style="float: right;">
+        <button class="btn-add" (click)="approved()">Approve <i class="fa-solid fa-check"></i></button> &nbsp;
+
+        <button class="btn-reject" (click)="reject()">Reject <i class="fa-solid fa-xmark"></i></button>
+    </div><br/><br/>
+
+    <div style="overflow-x: auto;">
+        <table style="width: 100%">
+            <tr>
+                <th width="30px">No</th>
+                <th style="cursor: pointer;" *ngFor="let column of sortableColumns" scope="col"
+                    [attr.data-order]="order" [attr.data-name]="column.columnName"
+                    (click)="toggleSort(column.columnName)">
+                    {{ column.displayText }}
+                </th>
+                <th width="90px">Action</th>
+            </tr>
+
+            <tr *ngIf="isLoading">
+                <td colspan="8">
+                    <ngx-skeleton-loader appearance="line" animation="progress-dark" [theme]="{height:'50px'}">
+                    </ngx-skeleton-loader>
+                </td>
+            </tr>
+
+            <tr *ngIf="applications.length == 0 && !isLoading">
+                <td colspan="8" style="color: red; text-align: center;">No New Application Request</td>
+            </tr>
+
+            <ng-container *ngIf="!isLoading">
+                <tr
+                    *ngFor="let application of applications | paginate: { itemsPerPage: itemPerPage, currentPage: pageNumber }; let i = index">
+                    <td style="text-align: center;">{{ (pageNumber - 1) * itemPerPage + i + 1 }}</td>
+                    <td style="padding-left:20px;">{{ application.createdDate | date : "dd/MM/YYYY" }}</td>
+                    <td style="padding-left:20px;">{{ application.divisionName }}</td>
+                    <td style="padding-left:20px;">{{ application.unitName }}</td>
+                    <td style="padding-left:20px;">{{ application.employeeName }}</td>
+                    <td style="padding-left:20px;">{{ application.systemName }}</td>
+                    <td style="padding-left:20px;">{{ application.roleName }}</td>
+                    <td style="text-align: center;">
+                        <input type="checkbox" [(ngModel)]="application.isSelected">
+                    </td>
+                </tr>
+            </ng-container>
+
+        </table>
+    </div>
+</div>

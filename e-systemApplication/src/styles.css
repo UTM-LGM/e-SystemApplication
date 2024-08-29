@@ -1,0 +1,114 @@
+body {
+  overflow: hidden;
+}
+
+.side-btn {
+  border: none;
+  background-color: transparent;
+  padding: 2px 20px;
+  cursor: pointer;
+  color: white;
+  width: 100%;
+  font-size: 11px;
+  height: 25px;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+.box-container {
+  margin: 20px;
+}
+
+.box-table{
+  padding: 18px;
+  border-radius: 10px;
+  background-color: ghostwhite;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+mat-select,
+input[type="text"],
+input[type="date"] {
+  width: 100%;
+  padding: 10px 7px;
+  margin: 7px 0;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 12px;
+}
+
+.btn-add {
+  border: none;
+  background-color: #0b810f;
+  padding: 7px 13px;
+  cursor: pointer;
+  border-radius: 15px;
+  color: white;
+  font-size: 11px;
+}
+
+.btn-reject {
+  border: none;
+  background-color: #DC4C64;
+  padding: 7px 13px;
+  cursor: pointer;
+  border-radius: 15px;
+  color: white;
+  font-size: 11px;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th{
+  background-color: #004a9f;
+  color: white;
+  height: 40px;
+}
+
+table, td, th {  
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 5px;
+}
+
+th{
+  padding-left: 20px;
+}
+
+tr:nth-child(odd){background-color: #f2f2f2;}
+
+.active-btn {
+  border: none;
+  background-color: #2196f3;
+  padding: 3px 15px;
+  cursor: pointer;
+  border-radius: 15px;
+  color: white;
+}
+
+.inactive-btn {
+  border: none;
+  background-color: #DC4C64;
+  padding: 3px 15px;
+  cursor: pointer;
+  border-radius: 15px;
+  color: white;
+}
+
+.btn-del {
+  border: none;
+  background-color: #DC4C64ed;
+  padding: 5px 13px;
+  cursor: pointer;
+  border-radius: 15px;
+  color: white;
+}
